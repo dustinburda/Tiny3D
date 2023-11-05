@@ -21,6 +21,7 @@ public:
     explicit Canvas(uint16_t width, uint16_t height) : screen_width_{width}, screen_height_{height} {
         buffer_.reserve(screen_width_ * screen_height_);
         buffer_.resize(screen_width_ * screen_height_);
+        std::memset(buffer_.data(), 0, buffer_.size() * 3 * sizeof (double) );
     }
 
     Color pixal_at(int x, int y) const;

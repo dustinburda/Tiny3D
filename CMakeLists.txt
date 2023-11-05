@@ -16,14 +16,17 @@ FetchContent_Declare(
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
-add_executable(${This} main.cpp)
+add_executable(${This}
+                main.cpp
+                Canvas.cpp)
 
 
 enable_testing()
 
 add_executable(
         testing_exec
-        testfile.cpp
+        CanvasTest.cpp
+        Canvas.cpp
 )
 target_link_libraries(
         testing_exec

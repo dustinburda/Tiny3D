@@ -1,6 +1,6 @@
 #include <iostream>
+#include "Canvas.h"
 
 int main() {
-    std::cout << "Hello, World!" << std::endl;
-    return 0;
+    Canvas canvas {10, 10};
 }

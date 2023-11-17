@@ -18,7 +18,9 @@ FetchContent_MakeAvailable(googletest)
 
 add_executable(${This}
                 main.cpp
-                Canvas.cpp)
+                Canvas.cpp
+                Line.cpp
+                Mesh.cpp)
 
 
 enable_testing()

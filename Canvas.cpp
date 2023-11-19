@@ -11,9 +11,12 @@ Color Canvas::pixal_at(int x, int y) const{
 }
 
 Color Canvas::write_pixel(const Color& color, int x, int y) {
-    if(x < 0 || x >= screen_width_ || y < 0 || y >= screen_height_)
-        throw std::logic_error("Must input a coordinate within screen dimensions!");
+    if(x < 0 || x >= screen_width_ || y < 0 || y >= screen_height_){
+        std::cout << "Out of dimensions! x: " << x << "  y: " << y << std::endl;
+        return color;
+    }
     buffer_[y * screen_width_ + x] = color;
+    return color;
 }
 
 void Canvas::flush_color(std::ofstream& canvas, Color& color) {

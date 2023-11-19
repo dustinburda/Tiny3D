@@ -12,15 +12,14 @@ int main() {
 
     /* TODO: Write Vec, Matrix class
      * TODO: Shape interface w/ Render method (For line, triangle, sphere, cube, etc)
-     * TODO: Mesh class
-     * TODO: OBJ Loader
      * */
 
-    Mesh m{"head.obj"};
+    std::string object = "head";
+    Mesh m{ object + ".obj"};
 
-    Line l1 {Point {0,0}, Point {1000, 1000}};
-    l1.raster(canvas, {1.0, 0.0, 0.0});
+    m.raster_wireframe(canvas, Color{0.0, 0.0, 1.0});
 
-    std::string path { "line.ppm" };
+
+    std::string path { object + ".ppm" };
     canvas.flush(path);
 }

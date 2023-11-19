@@ -15,9 +15,6 @@ public:
 
     // Bresenham
     void raster(Canvas& canvas, const Color& color) {
-        if(p1_[0] > p2_[0])
-            std:swap(p1_, p2_);
-
         bool swapped { false };
         if(std::abs(p1_[1] - p2_[1]) > std::abs(p1_[0] - p2_[0])) {
             std::swap(p1_[0], p1_[1]); //swap x0, y0
@@ -25,7 +22,11 @@ public:
             swapped = true;
         }
 
-        for(int x = p1_[0]; x < p2_[0]; x++) {
+
+        if(p1_[0] > p2_[0])
+            std:swap(p1_, p2_);
+
+        for(int x = p1_[0]; x <= p2_[0]; x++) {
             float t = (x - p1_[0]) / static_cast<float>(p2_[0] - p1_[0]);
             int y = p1_[1] * (1.0 -t) + p2_[1] * t;
 

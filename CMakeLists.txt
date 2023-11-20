@@ -20,14 +20,15 @@ add_executable(${This}
                 main.cpp
                 Canvas.cpp
                 Line.cpp
-                Mesh.cpp)
+                Mesh.cpp
+                Triangle.cpp)
 
 
 enable_testing()
 
 add_executable(
         testing_exec
-        CanvasTest.cpp
+        test/CanvasTest.cpp
         Canvas.cpp
 )
 target_link_libraries(

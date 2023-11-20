@@ -3,7 +3,7 @@
 //
 
 #include <gtest/gtest.h>
-#include "Canvas.h"
+#include "../Canvas.h"
 
 TEST(Canvas, ConstructorTest) {
     Canvas c(20, 10);

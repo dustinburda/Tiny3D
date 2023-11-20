@@ -21,7 +21,8 @@ add_executable(${This}
                 Canvas.cpp
                 Line.cpp
                 Mesh.cpp
-                Triangle.cpp)
+                Triangle.cpp
+                Vector.cpp)
 
 
 enable_testing()
@@ -29,6 +30,8 @@ enable_testing()
 add_executable(
         testing_exec
         test/CanvasTest.cpp
+        test/VecTest.cpp
+        Vector.cpp
         Canvas.cpp
 )
 target_link_libraries(

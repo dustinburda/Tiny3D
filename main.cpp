@@ -11,7 +11,6 @@ int main() {
     // line(130, 200, 800, 400, canvas, {1.0, 1.0, 1.0});
 
     /* TODO: Write Matrix class
-     * TODO: Shape interface w/ Render method (For line, triangle, sphere, cube, etc)
      * */
 
     std::string object = "head";

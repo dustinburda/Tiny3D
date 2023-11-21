@@ -34,15 +34,15 @@ void Mesh::raster_wireframe(Canvas& canvas, const Color& color) {
             auto index1 = face[i];
             auto index2 = face[(i + 1) % 3];
 
-            Vec Vec1 = vertices()[index1];
-            Vec Vec2 = vertices()[index2];
+            Vec<3, float> Vec1 = vertices()[index1];
+            Vec<3, float> Vec2 = vertices()[index2];
 
 
-            Point p1 { std::clamp(static_cast<int>(((Vec1[0] + 1.0)/2.0) * 1000), 1, canvas.screen_width() - 1),
-                       1000 - std::clamp(static_cast<int>(((Vec1[1] + 1.0)/2.0) * 1000), 1, canvas.screen_height() - 1)};
+            ScreenPoint p1 {{ std::clamp( static_cast<int>(((Vec1[0] + 1.0)/2.0) * 1000), 1, canvas.screen_width() - 1),
+                       1000 - std::clamp( static_cast<int>(((Vec1[1] + 1.0)/2.0) * 1000), 1, canvas.screen_height() - 1)}};
 
-            Point p2 { std::clamp(static_cast<int>(((Vec2[0] + 1.0)/2.0) * 1000), 1, canvas.screen_width() - 1),
-                       1000 - std::clamp(static_cast<int>(((Vec2[1] + 1.0)/2.0) * 1000), 1, canvas.screen_height() - 1)};
+            ScreenPoint p2 {{ std::clamp( static_cast<int>(((Vec2[0] + 1.0)/2.0) * 1000), 1, canvas.screen_width() - 1),
+                       1000 - std::clamp( static_cast<int>(((Vec2[1] + 1.0)/2.0) * 1000), 1, canvas.screen_height() - 1)}};
 
             Line l1 {p1, p2};
 
@@ -101,7 +101,7 @@ void Mesh::parse_vertex(std::string& line) {
 
     std::istringstream s {line};
 
-    Vec vertex;
+    Vec<3, float> vertex;
     int index = 0;
 
     std::string token;

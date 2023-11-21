@@ -14,7 +14,7 @@ void Line::raster(Canvas& canvas, const Color& color) {
 
 
     if(p1_[0] > p2_[0])
-        std:swap(p1_, p2_);
+        std::swap(p1_, p2_);
 
     for(int x = p1_[0]; x <= p2_[0]; x++) {
         float t = (x - p1_[0]) / static_cast<float>(p2_[0] - p1_[0]);

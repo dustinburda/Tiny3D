@@ -6,31 +6,29 @@
 #define RASTERIZATIONENGINE_TRIANGLE_H
 
 #include <array>
-#include "Vector.h"
+#include "util.h"
 #include "Box.h"
 #include "Canvas.h"
-
-using ScreenPoint = Vec<2>;
-
-
+#include "Line.h"
 
 
 class Triangle {
 public:
-    explicit Triangle(const Vec<2>& v1, const Vec<2>& v2, const Vec<2>& v3) : points_{v1, v2, v3} {
-
-        // Instantiate Box Here
-    }
+    explicit Triangle(const ScreenPoint& v1, const ScreenPoint& v2, const ScreenPoint& v3) : points_{v1, v2, v3}, bounding_box_{{v1, v2, v3}} {}
 
     void raster(Canvas& canvas, Color& color) const {
         // TODO: fill triangle
     }
 
+    // TODO: rename raster_wireframe
     void wire_frame(Canvas& canvas, Color& color) const {
-        // TODO: draw lines
+        for(int i = 0; i < 3; i++) {
+            Line l {points_[i], points_[(i+1) % 3]};
+            l.raster(canvas, color);
+        }
     }
 
-    Vec<3> normal() const {
+    Vec<3, int> normal() const {
     // TODO: implement normal
     }
 
@@ -43,7 +41,7 @@ private:
         // TODO: inside triangle?
     }
 
-    Vec<3> barycentric(ScreenPoint& P) {
+    Vec<3, int> barycentric(ScreenPoint& P) {
         // returns barycentric coordinates of point P
     }
 

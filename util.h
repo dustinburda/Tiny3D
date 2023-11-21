@@ -1,0 +1,15 @@
+//
+// Created by Dustin Burda on 11/21/23.
+//
+
+#ifndef RASTERIZATIONENGINE_UTIL_H
+#define RASTERIZATIONENGINE_UTIL_H
+
+#include "Vector.h"
+
+using ScreenPoint = Vec<2, int>;
+using WorldCoord = Vec<3, float>;
+
+
+
+#endif //RASTERIZATIONENGINE_UTIL_H

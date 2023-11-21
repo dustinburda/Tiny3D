@@ -6,22 +6,18 @@
 #define RASTERIZATIONENGINE_LINE_H
 
 #include "Canvas.h"
-
-
-// TODO: replace Point with Vec<2>
-
-using Point = std::array<int, 2>;
+#include "util.h"
 
 class Line {
 public:
-    explicit Line(const Point& p1, const Point& p2) : p1_{p1}, p2_{p2} {}
+    explicit Line(const ScreenPoint& p1, const ScreenPoint& p2) : p1_{p1}, p2_{p2} {}
 
     // Bresenham
     void raster(Canvas& canvas, const Color& color);
 
 private:
-    Point p1_;
-    Point p2_;
+    ScreenPoint p1_;
+    ScreenPoint p2_;
 };
 
 

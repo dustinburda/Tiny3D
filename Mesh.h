@@ -13,10 +13,10 @@
 #include <sstream>
 #include <filesystem>
 #include "Line.h"
+#include "Vector.h"
 
 
 // TODO: replace with Vec<3>
-using Vec = std::array<float, 3>;
 using Face = std::vector<int>;
 
 
@@ -37,7 +37,7 @@ public:
     size_t num_faces_() { return faces_.size(); }
 
     std::vector<Face>& faces() { return faces_; }
-    std::vector<Vec>& vertices() { return vertices_; }
+    std::vector<Vec<3, float>>& vertices() { return vertices_; }
 
 private:
 
@@ -47,7 +47,7 @@ private:
     void parse_vertex(std::string& line);
 
 private:
-    std::vector<Vec> vertices_;
+    std::vector<Vec<3, float>> vertices_;
     std::vector<Face> faces_;
 };
 

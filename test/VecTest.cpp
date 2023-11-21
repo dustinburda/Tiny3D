@@ -11,10 +11,21 @@ TEST(VecTest, OperatorTest) {
     Vec<3> v1{{1, 2, 3}};
     Vec<3> v2{{0, -3, 2}};
 
+    //Single Num Constructor
+    Vec<100> v100(1);
+    for(int i = 0; i < 100; i++) {
+        EXPECT_EQ(v100[i], 1);
+    }
+
     // Subscript
     EXPECT_EQ(v1[0], 1);
     EXPECT_EQ(v1[1], 2);
     EXPECT_EQ(v1[2], 3);
+
+    // Negate
+    Vec<4> v3 {{1,2,3,4}};
+    auto neg = Vec<4>{{-1, -2, -3, -4}};
+    EXPECT_EQ(-v3, neg);
 
     // Plus Equal
     v1 += v2;
@@ -26,19 +37,27 @@ TEST(VecTest, OperatorTest) {
     auto expect_minus_equal = Vec<3>{{1, 2, 3}};
     EXPECT_EQ(v1, expect_minus_equal);
 
-    // Negate
-    Vec<4> v3 {{1,2,3,4}};
-    auto neg = Vec<4>{{-1, -2, -3, -4}};
-    EXPECT_EQ(-v3, neg);
-
-    //Single Num Constructor
-    Vec<100> v100(1);
-    for(int i = 0; i < 100; i++) {
-        EXPECT_EQ(v100[i], 1);
-    }
 
     // Scalar Multiplication
+    v1 *= 2;
+    auto expect_double = Vec<3> {{2,4,6}};
+    EXPECT_EQ(v1, expect_double);
 
+    // Scalar Division
+    v1 /= 2;
+    auto expect_half = Vec<3>{{1,2,3}};
+    EXPECT_EQ(v1, expect_half);
+
+    float magnitude = v1.magnitude();
+    float expect_magnitude = std::sqrt(14);
+    EXPECT_EQ(magnitude, expect_magnitude);
+
+    Vec<3> normal_vec = v1.normal();
+    auto expect_normal_vec = v1 / magnitude;
+    EXPECT_EQ(normal_vec, expect_normal_vec);
+
+    v1.normalize();
+    EXPECT_EQ(v1, normal_vec);
 
 }
 
@@ -55,4 +74,12 @@ TEST(VecTest, StaticOperatorsTest) {
     auto expect_sub = Vec<3>{{1, 5, 1}};
     EXPECT_EQ(sub, expect_sub);
 
+    auto double_vec1 = v1 * 2;
+    auto double_vec2 = 2 * v1;
+    EXPECT_EQ(double_vec1, double_vec2);
+    auto expect_vec = Vec<3> {{2, 4, 6}};
+    EXPECT_EQ(expect_vec, double_vec1);
+
+    auto orig_vec = double_vec1 / 2;
+    EXPECT_EQ(orig_vec, v1);
 }

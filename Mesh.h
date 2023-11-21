@@ -14,6 +14,8 @@
 #include <filesystem>
 #include "Line.h"
 
+
+// TODO: replace with Vec<3>
 using Vec = std::array<float, 3>;
 using Face = std::vector<int>;
 

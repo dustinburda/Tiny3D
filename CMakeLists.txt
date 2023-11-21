@@ -19,10 +19,15 @@ FetchContent_MakeAvailable(googletest)
 add_executable(${This}
                 main.cpp
                 Canvas.cpp
+                Box.cpp
                 Line.cpp
                 Mesh.cpp
                 Triangle.cpp
-                Vector.cpp)
+                Vector.cpp
+                Matrix.cpp
+                Shader.cpp
+                Texture.cpp
+                Vertex.cpp)
 
 
 enable_testing()

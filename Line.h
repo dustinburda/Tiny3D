@@ -7,6 +7,9 @@
 
 #include "Canvas.h"
 
+
+// TODO: replace Point with Vec<2>
+
 using Point = std::array<int, 2>;
 
 class Line {

@@ -17,7 +17,7 @@ int main() {
     std::string object = "head";
     Mesh m{ object + ".obj"};
 
-    m.raster_wireframe(canvas, Color{1.0, 0.0, 1.0});
+    m.raster_wireframe(canvas, Color{0.0, 1.0, 1.0});
 
 
     std::string path { object + ".ppm" };

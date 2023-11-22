@@ -70,10 +70,12 @@ TEST(VecTest, StaticOperatorsTest) {
     auto expect_add = Vec<3, float>{{1, -1, 5}};
     EXPECT_EQ(add, expect_add);
 
+    // Subtraction
     auto sub = v1 - v2;
     auto expect_sub = Vec<3, float>{{1, 5, 1}};
     EXPECT_EQ(sub, expect_sub);
 
+    // Scalar multiplication
     auto double_vec1 = v1 * 2;
     auto double_vec2 = 2 * v1;
     EXPECT_EQ(double_vec1, double_vec2);
@@ -83,6 +85,7 @@ TEST(VecTest, StaticOperatorsTest) {
     auto orig_vec = double_vec1 / 2;
     EXPECT_EQ(orig_vec, v1);
 
+    // homogenous coordinates
     Vec<4, float> homogenized = v1.homogenize();
     auto homogenized_expect = Vec<4, float>{{1,2,3,1}};
     EXPECT_EQ(homogenized, homogenized_expect);
@@ -93,4 +96,22 @@ TEST(VecTest, StaticOperatorsTest) {
     homogenized *= 2;
     Vec<3, float> dehomogenized_double = homogenized.dehomogenize();
     EXPECT_EQ(dehomogenized, v1);
+
+    // Dot product
+    EXPECT_EQ(dot(v1, v2), 0);
+    EXPECT_EQ(dot(3*v1, 4*v2), 0);
+
+    Vec<3, float> v3{{1, -2, 3}};
+    Vec<3, float> v4{{2, 4, -5}};
+    EXPECT_EQ(dot(v3, v4), -21);
+
+    // Cross Product
+    auto cross_vec1_2 = cross(v1, v2);
+    auto cross_vec2_1 = cross(v2, v1);
+    EXPECT_EQ(cross_vec1_2, - cross_vec2_1);
+    Vec<3, float> expected_cross1_2 {{13, -2, -3}};
+    EXPECT_EQ(cross_vec1_2, expected_cross1_2);
+
+    Vec<3, float> expected_cross3_4{{-2, 11, 8}};
+    EXPECT_EQ(expected_cross3_4, cross(v3, v4));
 }

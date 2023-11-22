@@ -154,7 +154,6 @@ static Vec<N, T> operator/(const Vec<N, T>& v1, float t) {
     return v1 * (1/t);
 }
 
-// TODO: test
 template<std::size_t N, typename T>
 static float dot(const Vec<N, T>& v1, const Vec<N, T>& v2) {
     float dot_product = 0;
@@ -164,7 +163,6 @@ static float dot(const Vec<N, T>& v1, const Vec<N, T>& v2) {
     return dot_product;
 }
 
-// TODO: test
 template<typename T>
 static Vec<3, T> cross(const Vec<3, T>& v1, const Vec<3, T>& v2) {
     Vec<3, T> ret;

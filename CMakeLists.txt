@@ -27,7 +27,10 @@ add_executable(${This}
                 Matrix.cpp
                 Shader.cpp
                 Texture.cpp
-                Vertex.cpp)
+                Vertex.cpp
+                Camera.cpp
+                Shapes.cpp)
+
 
 
 enable_testing()
@@ -36,8 +39,10 @@ add_executable(
         testing_exec
         test/CanvasTest.cpp
         test/VecTest.cpp
+        test/TriangleTest.cpp
         Vector.cpp
         Canvas.cpp
+        Triangle.cpp
 )
 target_link_libraries(
         testing_exec

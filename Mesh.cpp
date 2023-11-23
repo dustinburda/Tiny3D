@@ -55,7 +55,7 @@ void Mesh::raster(Canvas& canvas, const Color& color, const Light& l) {
         if(intensity > 0) {
             Triangle t(screen_coord[0], screen_coord[1], screen_coord[2]);
             Color c {{ color[0] * intensity, color[1] * intensity, color[2] * intensity}};
-            t.raster(canvas, c);
+            t.raster_triangle_mesh(world_coord, canvas, c);
         }
 
     }

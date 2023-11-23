@@ -25,11 +25,15 @@ public:
         z_buffer_.resize(screen_width_ * screen_height_);
         buffer_.resize(screen_width_ * screen_height_);
         std::memset(buffer_.data(), 0, buffer_.size() * 3 * sizeof (double) );
-        std::fill(z_buffer_.begin(), z_buffer_.end(), std::numeric_limits<int>::max());
+        std::fill(z_buffer_.begin(), z_buffer_.end(), std::numeric_limits<int>::min());
     }
 
     Color pixal_at(int x, int y) const;
     Color write_pixel(const Color& color, int x, int y);
+
+    const float zbuff_val_at(int x, int y) const;
+    float set_zbuff_val(float z_buff_val, int x, int y);
+
 
     void flush_color(std::ofstream& canvas, Color& color);
     void flush(std::string& path);

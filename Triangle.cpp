@@ -9,13 +9,33 @@ void Triangle::raster(Canvas& canvas, const Color& color) const {
         for(int y = bounding_box_.min_y(); y <= bounding_box_.max_y(); y++) {
             ScreenPoint p {{ x, y}};
 
-            if( inside( p ) ) {
+            Vec<3, float> barycentric;
+            if( inside( p, barycentric ) ) {
                 canvas.write_pixel(color, x, y);
+            }
+        }
+    }
+}
+
+void Triangle::raster_triangle_mesh( std::array<Vec<3, float>, 3>& world_coord, Canvas& canvas, const Color& color) const {
+    for(int x = bounding_box_.min_x(); x <= bounding_box_.max_x(); x++) {
+        for(int y = bounding_box_.min_y(); y <= bounding_box_.max_y(); y++) {
+            ScreenPoint p {{ x, y}};
+
+            Vec<3, float> barycentric;
+            if( inside( p, barycentric ) ) {
+                float zbuff_val = world_coord[0][2]*barycentric[0] + world_coord[1][2]*barycentric[1] + world_coord[2][2]*barycentric[2];
+                if(canvas.zbuff_val_at(x,y) < zbuff_val) {
+                    canvas.set_zbuff_val(zbuff_val, x, y) ;
+                    canvas.write_pixel(color, x, y);
+                }
             }
 
         }
     }
 }
+
+
 
 void Triangle::raster_wireframe(Canvas& canvas, const Color& color) const {
     for(int i = 0; i < 3; i++) {
@@ -24,8 +44,8 @@ void Triangle::raster_wireframe(Canvas& canvas, const Color& color) const {
     }
 }
 
-bool Triangle::inside(const ScreenPoint& p) const {
-    auto barycentric_coord = barycentric(p);
+bool Triangle::inside(const ScreenPoint& p, Vec<3, float>& barycentric_coord) const {
+    barycentric_coord = barycentric(p);
 
     if(barycentric_coord[0] < 0 || barycentric_coord[1] < 0 || barycentric_coord[2] < 0) {
         return false;

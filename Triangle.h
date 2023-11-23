@@ -17,6 +17,7 @@ public:
     explicit Triangle(const ScreenPoint& v1, const ScreenPoint& v2, const ScreenPoint& v3) : points_{v1, v2, v3}, bounding_box_{{v1, v2, v3}} {}
 
     void raster(Canvas& canvas, const Color& color) const;
+    void raster_triangle_mesh( std::array<Vec<3, float>, 3>& world_coord, Canvas& canvas, const Color& color) const;
     void raster_wireframe(Canvas& canvas, const Color& color) const;
 
     Box& BBox() { return bounding_box_; }
@@ -26,7 +27,7 @@ private:
 
     static constexpr float epsilon = 10e-5;
 
-    bool inside(const ScreenPoint& p) const;
+    bool inside(const ScreenPoint& p, Vec<3, float>& barycentric_coord) const;
     Vec<3, float> barycentric(const ScreenPoint& P) const;
 
     std::array<ScreenPoint, 3> points_;

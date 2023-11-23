@@ -9,6 +9,7 @@
 
 using ScreenPoint = Vec<2, int>;
 using WorldCoord = Vec<3, float>;
+using Light = Vec<3, float>;
 
 
 

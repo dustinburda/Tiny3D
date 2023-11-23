@@ -43,6 +43,7 @@ add_executable(
         Vector.cpp
         Canvas.cpp
         Triangle.cpp
+        Line.cpp
 )
 target_link_libraries(
         testing_exec

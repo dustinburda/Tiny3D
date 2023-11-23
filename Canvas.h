@@ -19,9 +19,13 @@ public:
     Canvas() = delete;
 
     explicit Canvas(uint16_t width, uint16_t height) : screen_width_{width}, screen_height_{height} {
+        z_buffer_.reserve(screen_width_ * screen_height_);
         buffer_.reserve(screen_width_ * screen_height_);
+        // TODO: ^ we don't need this
+        z_buffer_.resize(screen_width_ * screen_height_);
         buffer_.resize(screen_width_ * screen_height_);
         std::memset(buffer_.data(), 0, buffer_.size() * 3 * sizeof (double) );
+        std::fill(z_buffer_.begin(), z_buffer_.end(), std::numeric_limits<int>::max());
     }
 
     Color pixal_at(int x, int y) const;
@@ -37,6 +41,7 @@ public:
 
 private:
     std::vector<Color> buffer_;
+    std::vector<float> z_buffer_;
     uint16_t screen_width_;
     uint16_t screen_height_;
 };

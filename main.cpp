@@ -3,6 +3,7 @@
 #include "Line.h"
 #include "Mesh.h"
 #include "Triangle.h"
+#include "util.h"
 
 
 
@@ -13,13 +14,14 @@ int main() {
     /* TODO: Write Matrix class
      * */
 
-    std::string object = "triangle";
-//    Mesh m{ object + ".obj"};
+    std::string object = "bunny2";
+    Mesh m{ object + ".obj"};
 
-     // m.raster_wireframe(canvas, Color{0.0, 1.0, 1.0});
-        Triangle t {ScreenPoint{{725, 500}}, ScreenPoint{{875, 420}}, ScreenPoint{{925, 180}} };
-        t.raster(canvas, Color{1.0, 0.0, 0.0});
-    t.raster_wireframe(canvas, Color{0.0, 1.0, 1.0});
+     m.raster(canvas, Color{1.0, 1.0, 1.0}, Light{{0, 0, -1}});
+     m.raster_wireframe(canvas, Color{1.0, 0.0, 1.0});
+//        Triangle t {ScreenPoint{{725, 500}}, ScreenPoint{{875, 420}}, ScreenPoint{{925, 180}} };
+//        t.raster(canvas, Color{1.0, 0.0, 0.0});
+//    t.raster_wireframe(canvas, Color{0.0, 1.0, 1.0});
 
     std::string path { object + ".ppm" };
     canvas.flush(path);

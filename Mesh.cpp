@@ -3,6 +3,8 @@
 //
 
 #include "Mesh.h"
+#include "Triangle.h"
+
 
 Mesh::Mesh(const std::string& filename) {
     std::string path = std::filesystem::current_path();
@@ -25,6 +27,37 @@ Mesh::Mesh(const std::string& filename) {
             default:
                 break;
         }
+    }
+}
+
+void Mesh::raster(Canvas& canvas, const Color& color, const Light& l) {
+    for(auto& face : faces()) {
+        std::array<Vec<3, float>, 3> normals;
+
+        std::array<Vec<3, float>, 3> world_coord;
+        std::array<ScreenPoint, 3> screen_coord;
+        for(size_t i = 0; i < 3; i++) {
+            auto index = face[i];
+
+            Vec<3, float> vec = vertices()[index];
+            world_coord[i] = vec;
+
+            ScreenPoint p {{ std::clamp( static_cast<int>(((vec[0] + 1.0)/2.0) * 1000), 1, canvas.screen_width() - 1),
+                              1000 - std::clamp( static_cast<int>(((vec[1] + 1.0)/2.0) * 1000), 1, canvas.screen_height() - 1)}};
+            screen_coord[i] = p;
+        }
+
+        auto normal = cross(world_coord[2] - world_coord[0], world_coord[1] - world_coord[0]).normalize();
+        assert(std::abs(normal.magnitude() - 1) < 10e-5);
+
+        // TODO: make a color class
+        auto intensity = dot(normal, l);
+        if(intensity > 0) {
+            Triangle t(screen_coord[0], screen_coord[1], screen_coord[2]);
+            Color c {{ color[0] * intensity, color[1] * intensity, color[2] * intensity}};
+            t.raster(canvas, c);
+        }
+
     }
 }
 

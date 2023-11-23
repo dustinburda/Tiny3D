@@ -113,7 +113,7 @@ private:
 };
 
 template<std::size_t N, typename T>
-static bool operator==(const Vec<N, T>& v1, const Vec<N, T> v2) {
+bool operator==(const Vec<N, T>& v1, const Vec<N, T> v2) {
     for(int i = 0; i < N; i++) {
         if(v1[i] != v2[i])
             return false;
@@ -122,7 +122,7 @@ static bool operator==(const Vec<N, T>& v1, const Vec<N, T> v2) {
 }
 
 template<std::size_t N, typename T>
-static Vec<N, T> operator+(const Vec<N, T>& v1, const Vec<N, T> v2) {
+Vec<N, T> operator+(const Vec<N, T>& v1, const Vec<N, T> v2) {
     Vec<N,T> ret;
     for(int i = 0; i < N; i++) {
         ret[i] = v1[i] + v2[i];
@@ -131,12 +131,12 @@ static Vec<N, T> operator+(const Vec<N, T>& v1, const Vec<N, T> v2) {
 }
 
 template<std::size_t N, typename T>
-static Vec<N, T> operator-(const Vec<N, T>& v1, const Vec<N, T> v2) {
+Vec<N, T> operator-(const Vec<N, T>& v1, const Vec<N, T> v2) {
     return v1 + (-v2);
 }
 
 template<std::size_t N, typename T>
-static Vec<N, T> operator*(const Vec<N, T>& v1, float t) {
+Vec<N, T> operator*(const Vec<N, T>& v1, float t) {
     Vec<N, T> ret;
     for(int i = 0; i < N; i++) {
         ret[i] = v1[i] *t;
@@ -145,17 +145,17 @@ static Vec<N, T> operator*(const Vec<N, T>& v1, float t) {
 }
 
 template<std::size_t N, typename T>
-static Vec<N, T> operator*(float t, const Vec<N, T>& v1) {
+Vec<N, T> operator*(float t, const Vec<N, T>& v1) {
     return v1 * t;
 }
 
 template<std::size_t N, typename T>
-static Vec<N, T> operator/(const Vec<N, T>& v1, float t) {
+Vec<N, T> operator/(const Vec<N, T>& v1, float t) {
     return v1 * (1/t);
 }
 
 template<std::size_t N, typename T>
-static float dot(const Vec<N, T>& v1, const Vec<N, T>& v2) {
+float dot(const Vec<N, T>& v1, const Vec<N, T>& v2) {
     float dot_product = 0;
     for(int i = 0; i < N; i++) {
         dot_product += v1[i] * v2[i];
@@ -164,7 +164,7 @@ static float dot(const Vec<N, T>& v1, const Vec<N, T>& v2) {
 }
 
 template<typename T>
-static Vec<3, T> cross(const Vec<3, T>& v1, const Vec<3, T>& v2) {
+Vec<3, T> cross(const Vec<3, T>& v1, const Vec<3, T>& v2) {
     Vec<3, T> ret;
     ret[0] = v1[1] * v2[2] - v2[1] * v1[2];
     ret[1] = v2[0] * v1[2] - v1[0] * v2[2];

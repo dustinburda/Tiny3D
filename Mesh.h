@@ -14,6 +14,7 @@
 #include <filesystem>
 #include "Line.h"
 #include "Vector.h"
+#include "util.h"
 
 
 // TODO: replace with Vec<3>
@@ -31,6 +32,7 @@ class Mesh {
 public:
     explicit Mesh(const std::string& filename);
 
+    void raster(Canvas& canvas, const Color& color, const Light& l);
     void raster_wireframe(Canvas& canvas, const Color& color);
 
     size_t num_vertices() { return vertices_.size(); }

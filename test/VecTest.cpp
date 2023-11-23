@@ -115,3 +115,9 @@ TEST(VecTest, StaticOperatorsTest) {
     Vec<3, float> expected_cross3_4{{-2, 11, 8}};
     EXPECT_EQ(expected_cross3_4, cross(v3, v4));
 }
+
+TEST(VecTest, Normalize) {
+    Vec<3, float> v1 {{1, 1, 1}};
+    auto normal = v1.normalize();
+    EXPECT_TRUE( std::abs(1.0 - normal.magnitude()) < 0.001);
+}

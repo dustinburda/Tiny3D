@@ -20,7 +20,7 @@
  *  plus equal/minus equal matrix --> DONE
  *  times equal/divide equal scalar --> DONE
  *  inverse/invert
- *  determinant
+ *  determinant --> DONE
  *  ========================================
  *  operator ==  --> DONE
  *  multiply/divide by scalar --> DONE
@@ -48,9 +48,17 @@ public:
         }
     }
 
-    Matrix(std::array<std::array<float, C>, R>& data) : data_{data} {}
+    Matrix(std::array<std::array<T, C>, R>& data) : data_{data} {}
 
-    Matrix(std::vector<std::vector<float>>& data) {
+    Matrix(std::array<T, R*C>& data) {
+        for(int i = 0; i < R; i++) {
+            for(int j = 0; j < C; j++) {
+                data_[i][j] = data[i*R + j];
+            }
+        }
+    }
+
+    Matrix(std::vector<std::vector<T>>& data) {
         assert(data.size() == R && data[0].size() == C);
         for(int i = 0; i < R; i++) {
             for(int j = 0; j < C; j++) {
@@ -58,7 +66,7 @@ public:
             }
         }
     }
-    Matrix(std::vector<float>& data) {
+    Matrix(std::vector<T>& data) {
         assert(data.size() == R*C);
         for(int i = 0; i < R; i++) {
             for(int j = 0; j < C; j++) {
@@ -202,6 +210,31 @@ Vec<R, T> operator*(const Matrix<R,C, T>& m1, const Vec<C, T>& v1) {
         ret[i] = dot;
     }
 
+    return ret;
+}
+
+template<std::size_t N, typename T>
+float determinant(Matrix<N,N, T>& m) {
+
+    for(int r = 0; r < N; r++) {
+        for(int r_next = r + 1; r_next < 4; r_next++) {
+            double f = m[r_next][r] / m[r][r];
+            for(int c = r; c < 4; c++) {
+                m[r_next][c] -= f * m[r][c];
+            }
+        }
+    }
+
+    double det = 1;
+    for(int i = 0; i < 4; i++)
+        det *= m[i][i];
+
+    return det;
+}
+
+template<std::size_t N, typename T>
+Matrix<N, N, T> inverse(Matrix<N,N, T>& m) {
+    Matrix<N, N, T> ret;
     return ret;
 }
 

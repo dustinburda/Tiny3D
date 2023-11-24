@@ -29,7 +29,8 @@ add_executable(${This}
                 Texture.cpp
                 Vertex.cpp
                 Camera.cpp
-                Shapes.cpp)
+                Shapes.cpp
+                Transformations.cpp)
 
 
 

@@ -1,0 +1,14 @@
+//
+// Created by Dustin Burda on 11/23/23.
+//
+
+#ifndef RASTERIZATIONENGINE_TRANSFORMATIONS_H
+#define RASTERIZATIONENGINE_TRANSFORMATIONS_H
+
+
+class Transformations {
+
+};
+
+
+#endif //RASTERIZATIONENGINE_TRANSFORMATIONS_H

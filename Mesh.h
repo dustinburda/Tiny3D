@@ -25,7 +25,8 @@ enum class Prefix_Type {
     Vertex,
     Texture,
     Normal,
-    Face
+    Face,
+    Unrecognized
 };
 
 class Mesh {

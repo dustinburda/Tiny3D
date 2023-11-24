@@ -94,6 +94,8 @@ Prefix_Type Mesh::get_parse_type(std::string& line) {
         return Prefix_Type::Normal;
     } else if (prefix == "f "){
         return Prefix_Type::Face;
+    } else {
+        return Prefix_Type::Unrecognized;
     }
 }
 

@@ -41,10 +41,13 @@ add_executable(
         test/CanvasTest.cpp
         test/VecTest.cpp
         test/TriangleTest.cpp
+        test/MatrixTest.cpp
         Vector.cpp
         Canvas.cpp
         Triangle.cpp
         Line.cpp
+        Matrix.cpp
+        Transformations.cpp
 )
 target_link_libraries(
         testing_exec

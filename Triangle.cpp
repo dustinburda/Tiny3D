@@ -3,6 +3,7 @@
 //
 
 #include "Triangle.h"
+#include "util.h"
 
 void Triangle::raster(Canvas& canvas, const Color& color) const {
     for(int x = bounding_box_.min_x(); x <= bounding_box_.max_x(); x++) {
@@ -54,7 +55,7 @@ bool Triangle::inside(const ScreenPoint& p, Vec<3, float>& barycentric_coord) co
     return true;
 }
 
-static constexpr float epsilon = 10e-5;
+
 Vec<3, float> Triangle::barycentric(const ScreenPoint& P) const {
     auto v1 =Vec<3, float> {{static_cast<float>(points_[1][0] -points_[0][0]), static_cast<float>(points_[2][0] - points_[0][0]), static_cast<float>(points_[0][0] - P[0])}};
     auto v2 =Vec<3, float> {{static_cast<float>(points_[1][1] - points_[0][1]), static_cast<float>(points_[2][1]- points_[0][1]), static_cast<float>(points_[0][1] - P[1])}};

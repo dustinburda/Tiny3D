@@ -6,6 +6,7 @@
 #include "Triangle.h"
 #include "util.h"
 
+// TODO: replace float with double
 
 
 int main() {
@@ -13,10 +14,10 @@ int main() {
 
     const auto time_start = std::chrono::steady_clock::now();
 
-    std::string object = "tetrahedron";
+    std::string object = "head";
     Mesh m{ object + ".obj"};
 
-    // m.raster(canvas, Color{1.0, 1.0, 1.0}, Light{{0, 0, -1}});
+    m.raster(canvas, Color{1.0, 1.0, 1.0}, Light{{0, 0, -1}});
      m.raster_wireframe(canvas, Color{1.0, 0.0, 0.0});
 //        Triangle t {ScreenPoint{{725, 500}}, ScreenPoint{{875, 420}}, ScreenPoint{{925, 180}} };
 //        t.raster(canvas, Color{1.0, 0.0, 0.0});

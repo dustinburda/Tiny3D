@@ -9,6 +9,7 @@
 #include <array>
 #include <vector>
 #include "Vector.h"
+#include "util.h"
 
 /*
  * TODO:
@@ -32,14 +33,14 @@
  *  TESTTTTTTTTTTTTTTT
  * */
 
-static constexpr float epsilon = 10e-5;
-
 
 // R - number of rows/column length
 // C - number of cols/row length
 template<std::size_t R, std::size_t C, typename T>
 class Matrix {
 public:
+//    Matrix() = default;
+
     explicit Matrix(T num) {
         for(int i = 0; i < R; i++) {
             for(int j = 0; j < C; j++) {
@@ -48,9 +49,9 @@ public:
         }
     }
 
-    Matrix(std::array<std::array<T, C>, R>& data) : data_{data} {}
+    explicit Matrix(std::array<std::array<T, C>, R>& data) : data_{data} {}
 
-    Matrix(std::array<T, R*C>& data) {
+    explicit Matrix(std::array<T, R*C>& data) {
         for(int i = 0; i < R; i++) {
             for(int j = 0; j < C; j++) {
                 data_[i][j] = data[i*R + j];
@@ -58,7 +59,7 @@ public:
         }
     }
 
-    Matrix(std::vector<std::vector<T>>& data) {
+    explicit Matrix(std::vector<std::vector<T>>& data) {
         assert(data.size() == R && data[0].size() == C);
         for(int i = 0; i < R; i++) {
             for(int j = 0; j < C; j++) {
@@ -66,7 +67,7 @@ public:
             }
         }
     }
-    Matrix(std::vector<T>& data) {
+    explicit Matrix(std::vector<T>& data) {
         assert(data.size() == R*C);
         for(int i = 0; i < R; i++) {
             for(int j = 0; j < C; j++) {
@@ -75,25 +76,26 @@ public:
         }
     }
 
-    std::array<float, C>& operator[](size_t i) const {
+    const std::array<T, C>& operator[](size_t i) const {
         if(i >= R)
             throw std::logic_error("");
         return data_[i];
     }
 
-    std::array<float, C>& operator[](size_t i) {
+    std::array<T, C>& operator[](size_t i) {
         if(i >= R)
             throw std::logic_error("");
         return data_[i];
     }
 
-    Matrix<R,C, T>& operator-() {
+    Matrix<R,C, T> operator-() const {
+        Matrix<R,C, T> ret = (*this);
         for(int i = 0; i < R; i++) {
             for(int j = 0; j < C; j++) {
-                data_[i][j] *= -1;
+                ret[i][j] *= -1;
             }
         }
-        return (*this);
+        return ret;
     }
 
     Matrix<R,C, T>& operator+=(const Matrix<R,C, T>& other) {
@@ -125,6 +127,40 @@ public:
         return (*this);
     }
 
+    Matrix<C,R, T> transpose() const {
+        Matrix<C,R, T> ret(0);
+        for(int i = 0; i < R; i++) {
+            for(int j = 0; j < C; j++) {
+                ret[j][i] = (*this)[i][j];
+            }
+        }
+        return ret;
+    }
+
+    double determinant() const {
+        if(R != C)
+            throw std::logic_error("Determinant of non-square matrix does not exist!");
+        Matrix<R,C, T> copy = (*this);
+
+        for(int r = 0; r < R; r++) {
+            for(int r_next = r + 1; r_next < R; r_next++) {
+                double f = copy[r_next][r] / copy[r][r];
+                for(int c = r; c < R; c++) {
+                    copy[r_next][c] -= f * copy[r][c];
+                }
+            }
+        }
+
+        double det = 1;
+        for(int i = 0; i < R; i++)
+            det *= copy[i][i];
+
+        return det;
+    }
+
+    bool invertible() const {
+        return determinant() != 0;
+    }
 
 
     size_t num_rows() const { return R; }
@@ -132,8 +168,19 @@ public:
 
 
 private:
-    std::array<std::array<float, C>, R> data_;
+    std::array<std::array<T, C>, R> data_;
 };
+
+template<size_t N, typename T>
+Matrix<N,N, T> Id() {
+    Matrix<N,N, T> ret(0);
+    for(int i = 0; i < N; i++) {
+        ret[i][i] = 1;
+    }
+
+    return ret;
+}
+
 
 template<std::size_t R, std::size_t C, typename T>
 static bool operator==(const Matrix<R,C, T>& m1, const Matrix<R,C, T>& m2) {
@@ -144,6 +191,11 @@ static bool operator==(const Matrix<R,C, T>& m1, const Matrix<R,C, T>& m2) {
         }
     }
     return true;
+}
+
+template<std::size_t R, std::size_t C, typename T>
+static bool operator!=(const Matrix<R,C, T>& m1, const Matrix<R,C, T>& m2) {
+    return !(m1 == m2);
 }
 
 template<std::size_t R, std::size_t C, typename T>
@@ -169,7 +221,7 @@ Matrix<R,C, T> operator/(const Matrix<R,C, T>& m1, float t) {
 
 template<std::size_t R, std::size_t C, typename T>
 Matrix<R,C, T> operator+(const Matrix<R,C, T>& m1, const Matrix<R,C, T>& m2) {
-    Matrix<R,C, T> ret;
+    Matrix<R,C, T> ret(0);
     for(int i = 0; i < R; i++) {
         for(int j = 0; j < C; j++) {
             ret[i][j] = m1[i][j] + m2[i][j];
@@ -213,29 +265,70 @@ Vec<R, T> operator*(const Matrix<R,C, T>& m1, const Vec<C, T>& v1) {
     return ret;
 }
 
-template<std::size_t N, typename T>
-float determinant(Matrix<N,N, T>& m) {
+//template<std::size_t N, typename T>
+//double determinant(const Matrix<N,N, T>& m) {
+//    Matrix<N,N, T> copy = m;
+//
+//    for(int r = 0; r < N; r++) {
+//        for(int r_next = r + 1; r_next < N; r_next++) {
+//            double f = copy[r_next][r] / copy[r][r];
+//            for(int c = r; c < N; c++) {
+//                copy[r_next][c] -= f * copy[r][c];
+//            }
+//        }
+//    }
+//
+//    double det = 1;
+//    for(int i = 0; i < N; i++)
+//        det *= copy[i][i];
+//
+//    return det;
+//}
 
-    for(int r = 0; r < N; r++) {
-        for(int r_next = r + 1; r_next < 4; r_next++) {
-            double f = m[r_next][r] / m[r][r];
-            for(int c = r; c < 4; c++) {
-                m[r_next][c] -= f * m[r][c];
+template<std::size_t N, typename T>
+Matrix<N, N, T> inverse(Matrix<N,N, T>& m) {
+    Matrix<N,2*N, T> augmented(0);
+    for(int i = 0; i < N; i++) {
+        for(int j = 0; j < N; j++) {
+            augmented[i][j] = m[i][j];
+        }
+    }
+
+    for(int i = 0; i < N; i++)
+        augmented[i][i+N] = 1;
+    for(int i = 0; i < N -1; i++) {
+        for(int  j = 2*N -1; j >= 0; j--) {
+            augmented[i][j] /= augmented[i][i];
+        }
+        for(int k = i + 1; k < N; k++) {
+            float coeff = augmented[k][i];
+            for(int j = 0; j < 2*N; j++) {
+                augmented[k][j] -= augmented[i][j] * coeff;
             }
         }
     }
 
-    double det = 1;
-    for(int i = 0; i < 4; i++)
-        det *= m[i][i];
+    for(int j = 2*N -1; j >= N - 1; j--)
+        augmented[N-1][j] /= augmented[N-1][N-1];
+    // second pass
+    for (int i = N -1; i > 0; i--) {
+        for (int k= i -1; k >= 0; k--) {
+            float coeff = augmented[k][i];
+            for (int j=0; j < 2*N; j++) {
+                augmented[k][j] -= augmented[i][j] * coeff;
+            }
+        }
+    }
 
-    return det;
-}
+    Matrix<N,N, T> inverse(0);
 
-template<std::size_t N, typename T>
-Matrix<N, N, T> inverse(Matrix<N,N, T>& m) {
-    Matrix<N, N, T> ret;
-    return ret;
+    for(int i = 0; i < N; i++) {
+        for(int j = 0; j < N; j++) {
+            inverse[i][j] = augmented[i][j + N];
+        }
+    }
+
+    return inverse;
 }
 
 

@@ -43,60 +43,72 @@ TEST(Transformation, ScalingTest) {
     EXPECT_EQ(reflectx * v2, v2_reflect);
 }
 
-//TEST(Transformation, RotateTest) {
-//    Vec<4, double> p1{{0, 1, 0, 1}};
-//    auto half_quarterX = Transformations::RotateX(pi/4);
-//    auto full_quarterX = Transformations::RotateX(pi/2);
-//
-//
-//    EXPECT_EQ(half_quarterX * p1, {{ 0, std::sqrt(2) / 2, std::sqrt(2) / 2, 1 } });
-//    EXPECT_EQ(full_quarterX * p1, {{ 0, 0, 1, 1 } });
-//
-//    Matrix R_Xinv;
-//    half_quarterX.Inverse(R_Xinv);
-//    EXPECT_EQ(R_Xinv * p1,  Tuple::Point(0, std::sqrt(2) / 2, -std::sqrt(2) / 2));
-//
-//
-//    Point p2 = Tuple::Point(0, 0, 1);
-//    auto half_quarterY = Transformations::RotateY(pi/4);
-//    auto full_quarterY = Transformations::RotateY(pi/2);
-//    EXPECT_EQ(half_quarterY * p2, Tuple::Point(std::sqrt(2) / 2, 0, std::sqrt(2) / 2));
-//    EXPECT_EQ(full_quarterY * p2, Tuple::Point(1, 0, 0));
-//
-//    Matrix R_Yinv;
-//    half_quarterY.Inverse(R_Yinv);
-//    EXPECT_EQ(R_Yinv * p2,  Tuple::Point(-std::sqrt(2) / 2, 0, std::sqrt(2) / 2));
-//
-//    auto half_quarterZ = Transformations::RotateZ(pi/4);
-//    auto full_quarterZ = Transformations::RotateZ(pi/2);
-//    EXPECT_EQ(half_quarterZ * p1, Tuple::Point(-std::sqrt(2) / 2, std::sqrt(2) / 2, 0));
-//    EXPECT_EQ(full_quarterZ * p1, Tuple::Point(-1, 0, 0));
-//
-//    Matrix R_Zinv;
-//    half_quarterZ.Inverse(R_Zinv);
-//    EXPECT_EQ(R_Zinv * p1, Tuple::Point(std::sqrt(2) / 2, std::sqrt(2) / 2, 0));
-//}
+TEST(Transformation, RotateTest) {
+    Vec<4, double> v1{{0, 1, 0, 1}};
+    auto half_quarterX = Transformations::RotateX(pi/4);
+    auto full_quarterX = Transformations::RotateX(pi/2);
 
-//TEST(Transformation, ShearTest) {
-//    Point p1 = Tuple::Point(2, 3, 4);
-//    auto s1 = Transformations::Shear(1, 0, 0, 0, 0, 0);
-//    EXPECT_EQ(s1 * p1, Tuple::Point(5, 3, 4));
-//
-//    auto s2 = Transformations::Shear(0, 1, 0, 0, 0, 0);
-//    EXPECT_EQ(s2 * p1, Tuple::Point(6, 3, 4));
-//
-//    auto s3 = Transformations::Shear(0, 0, 1, 0, 0, 0);
-//    EXPECT_EQ(s3 * p1, Tuple::Point(2, 5, 4));
-//
-//    auto s4 = Transformations::Shear(0, 0, 0, 1, 0, 0);
-//    EXPECT_EQ(s4 * p1, Tuple::Point(2, 7, 4));
-//
-//    auto s5 = Transformations::Shear(0, 0, 0, 0, 1, 0);
-//    EXPECT_EQ(s5 * p1, Tuple::Point(2, 3, 6));
-//
-//    auto s6 = Transformations::Shear(0, 0, 0, 0, 0, 1);
-//    EXPECT_EQ(s6 * p1, Tuple::Point(2, 3, 7));
-//}
+    Vec<4, double> half_quarterX_expect {{ 0, std::sqrt(2) / 2, std::sqrt(2) / 2, 1 }};
+    Vec<4, double> full_quarterX_expect {{ 0, 0, 1, 1 }};
+    EXPECT_EQ(half_quarterX * v1, half_quarterX_expect);
+    EXPECT_EQ(full_quarterX * v1, full_quarterX_expect);
+
+    Matrix<4,4, double> R_Xinv = inverse(half_quarterX);
+    Vec<4, double> inv_half_quarterX_expect{{ 0, std::sqrt(2) / 2, -std::sqrt(2) / 2, 1 }};
+    EXPECT_EQ(R_Xinv * v1,  inv_half_quarterX_expect);
+
+
+    Vec<4, double> v2 {{0, 0, 1, 1}};
+    auto half_quarterY = Transformations::RotateY(pi/4);
+    auto full_quarterY = Transformations::RotateY(pi/2);
+
+    Vec<4, double> half_quarterY_expect {{std::sqrt(2) / 2, 0, std::sqrt(2) / 2, 1}};
+    Vec<4, double> full_quarterY_expect {{1, 0, 0, 1}};
+    EXPECT_EQ(half_quarterY * v2, half_quarterY_expect);
+    EXPECT_EQ(full_quarterY * v2, full_quarterY_expect);
+
+    Matrix<4,4, double> R_Yinv = inverse(half_quarterY);
+    Vec<4, double> inv_half_quarterY_expect{{-std::sqrt(2) / 2, 0, std::sqrt(2) / 2, 1}};
+    EXPECT_EQ(R_Yinv * v2,  inv_half_quarterY_expect);
+
+    auto half_quarterZ = Transformations::RotateZ(pi/4);
+    auto full_quarterZ = Transformations::RotateZ(pi/2);
+    Vec<4, double> expect_half_quarterZ{{-std::sqrt(2) / 2, std::sqrt(2) / 2, 0, 1}};
+    Vec<4, double> expect_full_quarterZ{{-1, 0, 0, 1}};
+    EXPECT_EQ(half_quarterZ * v1, expect_half_quarterZ);
+    EXPECT_EQ(full_quarterZ * v1, expect_full_quarterZ);
+
+    Matrix<4,4, double> R_Zinv = inverse(half_quarterZ);
+    Vec<4, double> inv_half_quarterZ_expect{{std::sqrt(2) / 2, std::sqrt(2) / 2, 0, 1}};
+    EXPECT_EQ(R_Zinv * v1, inv_half_quarterZ_expect);
+}
+
+TEST(Transformation, ShearTest) {
+    Vec<4, double> v1{{2, 3, 4, 1}} ;
+    auto s1 = Transformations::Shear(1, 0, 0, 0, 0, 0);
+    Vec<4, double> expect_s1{{ 5, 3, 4, 1 }};
+    EXPECT_EQ(s1 * v1, expect_s1);
+
+    auto s2 = Transformations::Shear(0, 1, 0, 0, 0, 0);
+    Vec<4, double> expect_s2{{ 6, 3, 4, 1 }};
+    EXPECT_EQ(s2 * v1, expect_s2);
+
+    auto s3 = Transformations::Shear(0, 0, 1, 0, 0, 0);
+    Vec<4, double> expect_s3{{ 2, 5, 4, 1 }};
+    EXPECT_EQ(s3 * v1,  expect_s3);
+
+    auto s4 = Transformations::Shear(0, 0, 0, 1, 0, 0);
+    Vec<4, double> expect_s4{{ 2, 7, 4, 1 }};
+    EXPECT_EQ(s4 * v1, expect_s4);
+
+    auto s5 = Transformations::Shear(0, 0, 0, 0, 1, 0);
+    Vec<4, double> expect_s5{{ 2, 3, 6, 1 }};
+    EXPECT_EQ(s5 * v1, expect_s5);
+
+    auto s6 = Transformations::Shear(0, 0, 0, 0, 0, 1);
+    Vec<4, double> expect_s6{{ 2, 3, 7, 1 }};
+    EXPECT_EQ(s6 * v1, expect_s6);
+}
 
 TEST(Transformation, IntegrationTest) {
     Vec<4, double> v1{{1, 0, 1, 1}};

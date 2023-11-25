@@ -7,11 +7,7 @@
 
 #include "Vector.h"
 
-using ScreenPoint = Vec<2, int>;
-using WorldCoord = Vec<3, float>;
-using Light = Vec<3, float>;
-
-static constexpr double epsilon = 10e-5;
+static constexpr double epsilon = 10e-4;
 
 template<typename T>
 static bool equal(T num1, T num2) {

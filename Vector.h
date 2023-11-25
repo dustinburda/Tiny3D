@@ -9,6 +9,7 @@
 #include <initializer_list>
 #include <array>
 #include <vector>
+#include "util.h"
 
 template<std::size_t N, typename T>
 class Vec {
@@ -115,7 +116,7 @@ private:
 template<std::size_t N, typename T>
 bool operator==(const Vec<N, T>& v1, const Vec<N, T> v2) {
     for(int i = 0; i < N; i++) {
-        if(v1[i] != v2[i])
+        if(!equal(v1[i], v2[i]))
             return false;
     }
     return true;
@@ -171,6 +172,10 @@ Vec<3, T> cross(const Vec<3, T>& v1, const Vec<3, T>& v2) {
     ret[2] = v1[0] * v2[1] - v2[0] * v1[1];
     return ret;
 }
+
+using ScreenPoint = Vec<2, int>;
+using WorldCoord = Vec<3, float>;
+using Light = Vec<3, float>;
 
 
 #endif //RASTERIZATIONENGINE_VECTOR_H

@@ -260,7 +260,7 @@ TEST(Matrix, InversionTest) {
                                  -0.69231, -0.69231, -0.76923, -1.92308};
 
     Matrix<4,4, double> inverse2{inv2};
-//
+
     EXPECT_EQ(m2Inv, inverse2);
     EXPECT_EQ(m2 * m2Inv, identity4);
     EXPECT_EQ(m2Inv * m2, identity4);
@@ -276,10 +276,11 @@ TEST(Matrix, InversionTest) {
 
     Matrix<4,4, double> m3Inv = inverse(m3);
 
-    std::array<double, 16> inv3 {-0.04074,  -0.07778,  0.14444, -0.22222,
-                                 -0.07778,  0.03333,  0.36667, -0.33333,
-                                 -0.02901,  -0.14630,  -0.10926,  0.12963,
-                                 0.17778,  0.06667,  -0.26667,  0.33333};
+    // TODO: hardcode better matrix
+    std::array<double, 16> inv3 {-0.0407407,  -0.0777778,  0.144444, -0.2222222,
+                                 -0.0777778,  0.0333333,  0.366667, -0.333333,
+                                 -0.0290123,  -0.146296,  -0.109259,  0.12963,
+                                 0.177778,  0.0666667,  -0.266667,  0.333333};
     Matrix<4,4, double> inverse3{inv3};
     EXPECT_EQ(m3Inv, inverse3);
     EXPECT_EQ(m3 * m3Inv, identity4);

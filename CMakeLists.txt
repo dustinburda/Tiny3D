@@ -42,6 +42,7 @@ add_executable(
         test/VecTest.cpp
         test/TriangleTest.cpp
         test/MatrixTest.cpp
+        test/TransformationTest.cpp
         Vector.cpp
         Canvas.cpp
         Triangle.cpp

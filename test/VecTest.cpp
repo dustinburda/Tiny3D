@@ -86,15 +86,15 @@ TEST(VecTest, StaticOperatorsTest) {
     EXPECT_EQ(orig_vec, v1);
 
     // homogenous coordinates
-    Vec<4, float> homogenized = v1.homogenize();
+    Vec<4, float> homogenized = v1.homogenize_vector();
     auto homogenized_expect = Vec<4, float>{{1,2,3,1}};
     EXPECT_EQ(homogenized, homogenized_expect);
 
-    Vec<3, float> dehomogenized = homogenized.dehomogenize();
+    Vec<3, float> dehomogenized = homogenized.dehomogenize_vector();
     EXPECT_EQ(dehomogenized, v1);
 
     homogenized *= 2;
-    Vec<3, float> dehomogenized_double = homogenized.dehomogenize();
+    Vec<3, float> dehomogenized_double = homogenized.dehomogenize_vector();
     EXPECT_EQ(dehomogenized, v1);
 
     // Dot product

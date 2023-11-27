@@ -9,38 +9,69 @@
 
 // TODO: add homogenize, dehomogenize operations
 TEST(Transformation, TranslationTest) {
+    Vec<3, double> v1{{-3,4,5}};
+    Vec<4, double> v1_hom = v1.homogenize_vector();
     auto t1 = Transformations::Translate(5, -3, 2);
-    Vec<4, double> v1 {{-3, 4, 5, 1}};
-    Vec<4, double> v1_translate {{2, 1, 7, 1}};
-    EXPECT_EQ(t1 * v1, v1_translate);
+
+    Vec<4, double> v1_translate_hom {{2, 1, 7, 1}};
+    Vec<3, double> v1_translate {{2, 1, 7}};
+
+    EXPECT_EQ(t1 * v1_hom, v1_translate_hom);
+    EXPECT_EQ((t1 * v1_hom).dehomogenize_vector(), v1_translate);
 
     Matrix<4, 4, double> t2 = inverse(t1);
     Vec<4, double> v2_translate {{-8, 7, 3, 1}};
-    EXPECT_EQ(t2 * v1, v2_translate);
+    EXPECT_EQ(t2 * v1_hom, v2_translate);
+    EXPECT_EQ((t2 * v1_hom).dehomogenize_vector(), v2_translate.dehomogenize_vector());
 
-    Vec<4, double> n3 {{-3, 4, 5, 0}};
-    EXPECT_EQ(t1 * n3, n3);
+
+    Vec<3, double> n3 {{-3,4,5}};
+    Vec<4, double> n3_hom {{-3, 4, 5, 0}};
+    EXPECT_EQ(t1*n3_hom, n3_hom);
+    EXPECT_EQ((t1 * n3_hom).dehomogenize_normal(), n3_hom.dehomogenize_normal());
 }
 
 
 TEST(Transformation, ScalingTest) {
     auto t1 = Transformations::Scale(2, 3, 4);
-    Vec<4, double> v1 {{-4, 6, 8, 1}};
-    Vec<4, double> v1_scale{{ -8, 18, 32, 1 }};
-    EXPECT_EQ(t1 * v1,  v1_scale);
+    Vec<3, double> v1 {{-4, 6, 8}};
+    Vec<4, double> v1_hom {{-4, 6, 8, 1}};
+    Vec<3, double> v1_scale{{ -8, 18, 32}};
+    Vec<4, double> v1_scale_hom{{ -8, 18, 32, 1 }};
 
-    Vec<4, double> n1{{-4, 6, 8, 0}};
-    Vec<4, double> n1_scale {{ -8, 18, 32, 0 }};
-    EXPECT_EQ(t1 * n1, n1_scale);
+    EXPECT_EQ(t1 * v1_hom,  v1_scale_hom);
+    EXPECT_EQ(t1 * v1.homogenize_vector(),  v1_scale_hom);
+    EXPECT_EQ((t1 * v1.homogenize_vector()).dehomogenize_vector(), v1_scale);
+    EXPECT_EQ((t1 * v1_hom).dehomogenize_vector(), v1_scale);
+    EXPECT_EQ((t1 * v1.homogenize_vector()).dehomogenize_vector(), v1_scale_hom.dehomogenize_vector());
+    EXPECT_EQ((t1 * v1_hom).dehomogenize_vector(), v1_scale_hom.dehomogenize_vector());
+
+    Vec<3, double> n1{{-4, 6, 8}};
+    Vec<3, double> n1_scale {{ -8, 18, 32}};
+    Vec<4, double> n1_hom{{-4, 6, 8, 0}};
+    Vec<4, double> n1_scale_hom {{ -8, 18, 32, 0 }};
+    EXPECT_EQ(t1 * n1_hom, n1_scale_hom);
+    EXPECT_EQ(t1 * n1.homogenize_normal(), n1_scale_hom);
+    EXPECT_EQ((t1 * n1_hom).dehomogenize_normal(), n1_scale);
+    EXPECT_EQ((t1 * n1.homogenize_normal()).dehomogenize_normal(), n1_scale);
+    EXPECT_EQ((t1 * n1_hom).dehomogenize_normal(), n1_scale_hom.dehomogenize_normal());
+    EXPECT_EQ((t1 * n1.homogenize_normal()).dehomogenize_normal(), n1_scale_hom.dehomogenize_normal());
 
     Matrix<4,4, double> t2 = inverse(t1);
-    Vec<4, double> n1_inv_scale {{-2, 2, 2, 0}};
-    EXPECT_EQ(t2 * n1, n1_inv_scale);
+    Vec<3, double> n1_inv_scale {{-2, 2, 2}};
+    Vec<4, double> n1_inv_scale_hom {{-2, 2, 2, 0}};
+    EXPECT_EQ(t2 * n1_hom, n1_inv_scale_hom);
+    EXPECT_EQ((t2 * n1_hom).dehomogenize_normal(), n1_inv_scale_hom.dehomogenize_normal());
+    EXPECT_EQ((t2 * n1.homogenize_normal()).dehomogenize_normal(), n1_inv_scale_hom.dehomogenize_normal());
+    EXPECT_EQ((t2 * n1.homogenize_normal()).dehomogenize_normal(), n1_inv_scale);
 
     auto reflectx = Transformations::Scale(-1, 1, 1);
-    Vec<4, double> v2 {{2, 3, 4, 1}};
-    Vec<4, double> v2_reflect {{-2, 3, 4, 1}};
-    EXPECT_EQ(reflectx * v2, v2_reflect);
+    Vec<3, double> v2 {{2, 3, 4}};
+    Vec<3, double> v2_reflect {{-2, 3, 4}};
+    Vec<4, double> v2_hom {{2, 3, 4, 1}};
+    Vec<4, double> v2_reflect_hom {{-2, 3, 4, 1}};
+    EXPECT_EQ((reflectx * v2.homogenize_vector()).dehomogenize_vector(), v2_reflect);
+    EXPECT_EQ(reflectx * v2.homogenize_vector(), v2_reflect_hom);
 }
 
 TEST(Transformation, RotateTest) {

@@ -88,7 +88,7 @@ public:
         return (*this)/(magnitude());
     };
 
-    Vec<N+1, T> homogenize() const {
+    Vec<N+1, T> homogenize_vector() const {
         Vec<N+1, T> ret;
         for(int i = 0; i < N; i++) {
             ret[i] = (*this)[i];
@@ -97,7 +97,7 @@ public:
         return ret;
     }
 
-    Vec<N-1, T> dehomogenize() {
+    Vec<N-1, T> dehomogenize_vector() {
         if(N == 0)
             throw std::logic_error("Cant de-homogenize 0 dimensional vector!");
         if((*this)[N-1] == 0)
@@ -105,6 +105,25 @@ public:
         Vec<N-1, T> ret;
         for(int i = 0; i < N - 1; i++) {
             ret[i] = (*this)[i] / (*this)[N-1];
+        }
+        return ret;
+    }
+
+    Vec<N+1, T> homogenize_normal() const {
+        Vec<N+1, T> ret;
+        for(int i = 0; i < N; i++) {
+            ret[i] = (*this)[i];
+        }
+        ret[N] = 0;
+        return ret;
+    }
+
+    Vec<N-1, T> dehomogenize_normal() {
+        if(N == 0)
+            throw std::logic_error("Cant de-homogenize 0 dimensional normal!");
+        Vec<N-1, T> ret;
+        for(int i = 0; i < N - 1; i++) {
+            ret[i] = (*this)[i];
         }
         return ret;
     }

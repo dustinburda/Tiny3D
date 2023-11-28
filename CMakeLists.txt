@@ -30,7 +30,8 @@ add_executable(${This}
                 Vertex.cpp
                 Camera.cpp
                 Shapes.cpp
-                Transformations.cpp)
+                Transformations.cpp
+                Instance.cpp)
 
 
 

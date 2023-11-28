@@ -75,89 +75,89 @@ TEST(Transformation, ScalingTest) {
 }
 
 TEST(Transformation, RotateTest) {
-    Vec<4, double> v1{{0, 1, 0, 1}};
+    Vec<3, double> v1{{0, 1, 0}};
     auto half_quarterX = Transformations::RotateX(pi/4);
     auto full_quarterX = Transformations::RotateX(pi/2);
 
-    Vec<4, double> half_quarterX_expect {{ 0, std::sqrt(2) / 2, std::sqrt(2) / 2, 1 }};
-    Vec<4, double> full_quarterX_expect {{ 0, 0, 1, 1 }};
-    EXPECT_EQ(half_quarterX * v1, half_quarterX_expect);
-    EXPECT_EQ(full_quarterX * v1, full_quarterX_expect);
+    Vec<3, double> half_quarterX_expect {{ 0, std::sqrt(2) / 2, std::sqrt(2) / 2}};
+    Vec<3, double> full_quarterX_expect {{ 0, 0, 1}};
+    EXPECT_EQ((half_quarterX * v1.homogenize_vector()).dehomogenize_vector(), half_quarterX_expect);
+    EXPECT_EQ((full_quarterX * v1.homogenize_vector()).dehomogenize_vector(), full_quarterX_expect);
 
     Matrix<4,4, double> R_Xinv = inverse(half_quarterX);
-    Vec<4, double> inv_half_quarterX_expect{{ 0, std::sqrt(2) / 2, -std::sqrt(2) / 2, 1 }};
-    EXPECT_EQ(R_Xinv * v1,  inv_half_quarterX_expect);
+    Vec<3, double> inv_half_quarterX_expect{{ 0, std::sqrt(2) / 2, -std::sqrt(2) / 2}};
+    EXPECT_EQ((R_Xinv * v1.homogenize_vector()).dehomogenize_vector(),  inv_half_quarterX_expect);
 
 
-    Vec<4, double> v2 {{0, 0, 1, 1}};
+    Vec<3, double> v2 {{0, 0, 1}};
     auto half_quarterY = Transformations::RotateY(pi/4);
     auto full_quarterY = Transformations::RotateY(pi/2);
 
-    Vec<4, double> half_quarterY_expect {{std::sqrt(2) / 2, 0, std::sqrt(2) / 2, 1}};
-    Vec<4, double> full_quarterY_expect {{1, 0, 0, 1}};
-    EXPECT_EQ(half_quarterY * v2, half_quarterY_expect);
-    EXPECT_EQ(full_quarterY * v2, full_quarterY_expect);
+    Vec<3, double> half_quarterY_expect {{std::sqrt(2) / 2, 0, std::sqrt(2) / 2}};
+    Vec<3, double> full_quarterY_expect {{1, 0, 0}};
+    EXPECT_EQ((half_quarterY * v2.homogenize_vector()).dehomogenize_vector(), half_quarterY_expect);
+    EXPECT_EQ((full_quarterY * v2.homogenize_vector()).dehomogenize_vector(), full_quarterY_expect);
 
     Matrix<4,4, double> R_Yinv = inverse(half_quarterY);
-    Vec<4, double> inv_half_quarterY_expect{{-std::sqrt(2) / 2, 0, std::sqrt(2) / 2, 1}};
-    EXPECT_EQ(R_Yinv * v2,  inv_half_quarterY_expect);
+    Vec<3, double> inv_half_quarterY_expect{{-std::sqrt(2) / 2, 0, std::sqrt(2) / 2}};
+    EXPECT_EQ((R_Yinv * v2.homogenize_vector()).dehomogenize_vector(),  inv_half_quarterY_expect);
 
     auto half_quarterZ = Transformations::RotateZ(pi/4);
     auto full_quarterZ = Transformations::RotateZ(pi/2);
-    Vec<4, double> expect_half_quarterZ{{-std::sqrt(2) / 2, std::sqrt(2) / 2, 0, 1}};
-    Vec<4, double> expect_full_quarterZ{{-1, 0, 0, 1}};
-    EXPECT_EQ(half_quarterZ * v1, expect_half_quarterZ);
-    EXPECT_EQ(full_quarterZ * v1, expect_full_quarterZ);
+    Vec<3, double> expect_half_quarterZ{{-std::sqrt(2) / 2, std::sqrt(2) / 2, 0}};
+    Vec<3, double> expect_full_quarterZ{{-1, 0, 0}};
+    EXPECT_EQ((half_quarterZ * v1.homogenize_vector()).dehomogenize_vector(), expect_half_quarterZ);
+    EXPECT_EQ((full_quarterZ * v1.homogenize_vector()).dehomogenize_vector(), expect_full_quarterZ);
 
     Matrix<4,4, double> R_Zinv = inverse(half_quarterZ);
-    Vec<4, double> inv_half_quarterZ_expect{{std::sqrt(2) / 2, std::sqrt(2) / 2, 0, 1}};
-    EXPECT_EQ(R_Zinv * v1, inv_half_quarterZ_expect);
+    Vec<3, double> inv_half_quarterZ_expect{{std::sqrt(2) / 2, std::sqrt(2) / 2, 0}};
+    EXPECT_EQ((R_Zinv * v1.homogenize_vector()).dehomogenize_vector(), inv_half_quarterZ_expect);
 }
 
 TEST(Transformation, ShearTest) {
-    Vec<4, double> v1{{2, 3, 4, 1}} ;
+    Vec<3, double> v1{{2, 3, 4}} ;
     auto s1 = Transformations::Shear(1, 0, 0, 0, 0, 0);
-    Vec<4, double> expect_s1{{ 5, 3, 4, 1 }};
-    EXPECT_EQ(s1 * v1, expect_s1);
+    Vec<3, double> expect_s1{{ 5, 3, 4}};
+    EXPECT_EQ((s1 * v1.homogenize_vector()).dehomogenize_vector(), expect_s1);
 
     auto s2 = Transformations::Shear(0, 1, 0, 0, 0, 0);
-    Vec<4, double> expect_s2{{ 6, 3, 4, 1 }};
-    EXPECT_EQ(s2 * v1, expect_s2);
+    Vec<3, double> expect_s2{{ 6, 3, 4}};
+    EXPECT_EQ((s2 * v1.homogenize_vector()).dehomogenize_vector(), expect_s2);
 
     auto s3 = Transformations::Shear(0, 0, 1, 0, 0, 0);
-    Vec<4, double> expect_s3{{ 2, 5, 4, 1 }};
-    EXPECT_EQ(s3 * v1,  expect_s3);
+    Vec<3, double> expect_s3{{ 2, 5, 4 }};
+    EXPECT_EQ((s3 * v1.homogenize_vector()).dehomogenize_vector(),  expect_s3);
 
     auto s4 = Transformations::Shear(0, 0, 0, 1, 0, 0);
-    Vec<4, double> expect_s4{{ 2, 7, 4, 1 }};
-    EXPECT_EQ(s4 * v1, expect_s4);
+    Vec<3, double> expect_s4{{ 2, 7, 4}};
+    EXPECT_EQ((s4 * v1.homogenize_vector()).dehomogenize_vector(), expect_s4);
 
     auto s5 = Transformations::Shear(0, 0, 0, 0, 1, 0);
-    Vec<4, double> expect_s5{{ 2, 3, 6, 1 }};
-    EXPECT_EQ(s5 * v1, expect_s5);
+    Vec<3, double> expect_s5{{ 2, 3, 6 }};
+    EXPECT_EQ((s5 * v1.homogenize_vector()).dehomogenize_vector(), expect_s5);
 
     auto s6 = Transformations::Shear(0, 0, 0, 0, 0, 1);
-    Vec<4, double> expect_s6{{ 2, 3, 7, 1 }};
-    EXPECT_EQ(s6 * v1, expect_s6);
+    Vec<3, double> expect_s6{{ 2, 3, 7 }};
+    EXPECT_EQ((s6 * v1.homogenize_vector()).dehomogenize_vector(), expect_s6);
 }
 
 TEST(Transformation, IntegrationTest) {
-    Vec<4, double> v1{{1, 0, 1, 1}};
+    Vec<3, double> v1{{1, 0, 1}};
     auto A = Transformations::RotateX(pi/2);
     auto B = Transformations::Scale(5, 5, 5);
     auto C = Transformations::Translate(10, 5, 7);
 
-    Vec<4, double> rotate_x_expect{{ 1, -1, 0, 1 }};
-    EXPECT_EQ(A * v1, rotate_x_expect);
+    Vec<3, double> rotate_x_expect{{ 1, -1, 0}};
+    EXPECT_EQ((A * v1.homogenize_vector()).dehomogenize_vector(), rotate_x_expect);
 
-    auto v2 = A * v1;
-    Vec<4, double> scale_expect {{5, -5, 0, 1}};
-    EXPECT_EQ(B * v2, scale_expect);
+    auto v2 = A * v1.homogenize_vector();
+    Vec<3, double> scale_expect {{5, -5, 0}};
+    EXPECT_EQ((B * v2).dehomogenize_vector(), scale_expect);
 
     auto v3 = B * v2;
-    Vec<4, double> translate_expect {{15, 0, 7, 1}};
-    EXPECT_EQ(C * v3, translate_expect);
+    Vec<3, double> translate_expect {{15, 0, 7}};
+    EXPECT_EQ((C * v3).dehomogenize_vector(), translate_expect);
 
-    Vec<4, double> final_result {{15, 0, 7, 1}};
-    EXPECT_EQ(C * B * A * v1, final_result);
+    Vec<3, double> final_result {{15, 0, 7}};
+    EXPECT_EQ((C * B * A * v1.homogenize_vector()).dehomogenize_vector(), final_result);
 }

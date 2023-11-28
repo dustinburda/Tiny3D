@@ -11,29 +11,6 @@
 #include "Vector.h"
 #include "util.h"
 
-/*
- * TODO:
- *  constructor single number --> DONE
- *  constructor array of data --> DONE
- *  constructor vector of data --> DONE
- *  subscript --> DONE
- *  negate --> DONE
- *  plus equal/minus equal matrix --> DONE
- *  times equal/divide equal scalar --> DONE
- *  inverse/invert
- *  determinant --> DONE
- *  ========================================
- *  operator ==  --> DONE
- *  multiply/divide by scalar --> DONE
- *  add/subtract matrix --> DONE
- *  multiply matrix --> DONE
- *  multiply vector --> DONE
- *
- *  MATRIX FOR_EACH
- *  TESTTTTTTTTTTTTTTT
- * */
-
-
 // R - number of rows/column length
 // C - number of cols/row length
 template<std::size_t R, std::size_t C, typename T>
@@ -264,26 +241,6 @@ Vec<R, T> operator*(const Matrix<R,C, T>& m1, const Vec<C, T>& v1) {
 
     return ret;
 }
-
-//template<std::size_t N, typename T>
-//double determinant(const Matrix<N,N, T>& m) {
-//    Matrix<N,N, T> copy = m;
-//
-//    for(int r = 0; r < N; r++) {
-//        for(int r_next = r + 1; r_next < N; r_next++) {
-//            double f = copy[r_next][r] / copy[r][r];
-//            for(int c = r; c < N; c++) {
-//                copy[r_next][c] -= f * copy[r][c];
-//            }
-//        }
-//    }
-//
-//    double det = 1;
-//    for(int i = 0; i < N; i++)
-//        det *= copy[i][i];
-//
-//    return det;
-//}
 
 template<std::size_t N, typename T>
 Matrix<N, N, T> inverse(Matrix<N,N, T>& m) {

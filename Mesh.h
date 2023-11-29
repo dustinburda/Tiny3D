@@ -15,6 +15,7 @@
 #include "Line.h"
 #include "Vector.h"
 #include "util.h"
+#include "Triangle.h"
 
 
 // TODO: replace with Vec<3>
@@ -40,7 +41,7 @@ public:
     size_t num_faces_() { return faces_.size(); }
 
     std::vector<Face>& faces() { return faces_; }
-    std::vector<Vec<3, float>>& vertices() { return vertices_; }
+    std::vector<Vec<3, double>>& vertices() { return vertices_; }
 
 private:
 
@@ -50,7 +51,7 @@ private:
     void parse_vertex(std::string& line);
 
 private:
-    std::vector<Vec<3, float>> vertices_;
+    std::vector<Vec<3, double>> vertices_;
     std::vector<Face> faces_;
 };
 

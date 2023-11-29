@@ -8,6 +8,8 @@
 #include "Vector.h"
 
 static constexpr double epsilon = 10e-4;
+static constexpr int height = 1000;
+static constexpr int width = 1000;
 
 template<typename T>
 static bool equal(T num1, T num2) {

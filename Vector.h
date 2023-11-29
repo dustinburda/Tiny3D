@@ -25,7 +25,7 @@ public:
         }
     }
 
-    explicit Vec(float num) {
+    explicit Vec(double num) {
         data_.fill(num);
     }
 
@@ -43,7 +43,7 @@ public:
 
     Vec<N, T> operator-() const {
         Vec<N, T> neg = *this;
-        std::for_each(neg.data_.begin(), neg.data_.end(), [](float& elem){
+        std::for_each(neg.data_.begin(), neg.data_.end(), [](T& elem){
             elem *= -1;
         });
         return neg;
@@ -60,14 +60,14 @@ public:
         return (*this += -other);
     }
 
-    Vec<N, T>& operator*=(float t) {
-        std::for_each(data_.begin(), data_.end(), [&t](float& elem) {
+    Vec<N, T>& operator*=(double t) {
+        std::for_each(data_.begin(), data_.end(), [&t](T& elem) {
             elem *= t;
         });
         return *this;
     }
 
-    Vec<N, T>& operator/=(float t) {
+    Vec<N, T>& operator/=(double t) {
         return (*this *= (1/t));
     }
 
@@ -76,8 +76,8 @@ public:
         return *this;
     }
 
-    float magnitude() const {
-        float length_squared = 0;
+    double magnitude() const {
+        double length_squared = 0;
         for(int i = 0; i < N; i++) {
             length_squared += data_[i]*data_[i];
         }
@@ -133,7 +133,7 @@ private:
 };
 
 template<std::size_t N, typename T>
-bool operator==(const Vec<N, T>& v1, const Vec<N, T> v2) {
+bool operator==(const Vec<N, T>& v1, const Vec<N, T>& v2) {
     for(int i = 0; i < N; i++) {
         if(!equal(v1[i], v2[i]))
             return false;
@@ -156,7 +156,7 @@ Vec<N, T> operator-(const Vec<N, T>& v1, const Vec<N, T> v2) {
 }
 
 template<std::size_t N, typename T>
-Vec<N, T> operator*(const Vec<N, T>& v1, float t) {
+Vec<N, T> operator*(const Vec<N, T>& v1, double t) {
     Vec<N, T> ret;
     for(int i = 0; i < N; i++) {
         ret[i] = v1[i] *t;
@@ -165,18 +165,18 @@ Vec<N, T> operator*(const Vec<N, T>& v1, float t) {
 }
 
 template<std::size_t N, typename T>
-Vec<N, T> operator*(float t, const Vec<N, T>& v1) {
+Vec<N, T> operator*(double t, const Vec<N, T>& v1) {
     return v1 * t;
 }
 
 template<std::size_t N, typename T>
-Vec<N, T> operator/(const Vec<N, T>& v1, float t) {
+Vec<N, T> operator/(const Vec<N, T>& v1, double t) {
     return v1 * (1/t);
 }
 
 template<std::size_t N, typename T>
-float dot(const Vec<N, T>& v1, const Vec<N, T>& v2) {
-    float dot_product = 0;
+double dot(const Vec<N, T>& v1, const Vec<N, T>& v2) {
+    double dot_product = 0;
     for(int i = 0; i < N; i++) {
         dot_product += v1[i] * v2[i];
     }
@@ -193,8 +193,8 @@ Vec<3, T> cross(const Vec<3, T>& v1, const Vec<3, T>& v2) {
 }
 
 using ScreenPoint = Vec<2, int>;
-using WorldCoord = Vec<3, float>;
-using Light = Vec<3, float>;
+using WorldCoord = Vec<3, double>;
+using Light = Vec<3, double>;
 
 
 #endif //RASTERIZATIONENGINE_VECTOR_H

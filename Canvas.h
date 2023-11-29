@@ -31,8 +31,8 @@ public:
     Color pixal_at(int x, int y) const;
     Color write_pixel(const Color& color, int x, int y);
 
-    const float zbuff_val_at(int x, int y) const;
-    float set_zbuff_val(float z_buff_val, int x, int y);
+    const double zbuff_val_at(int x, int y) const;
+    float set_zbuff_val(double z_buff_val, int x, int y);
 
 
     void flush_color(std::ofstream& canvas, Color& color);
@@ -45,7 +45,7 @@ public:
 
 private:
     std::vector<Color> buffer_;
-    std::vector<float> z_buffer_;
+    std::vector<double> z_buffer_;
     uint16_t screen_width_;
     uint16_t screen_height_;
 };

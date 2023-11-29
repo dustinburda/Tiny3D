@@ -44,11 +44,11 @@ void Canvas::flush(std::string& path) {
     canvas.flush();
 }
 
-const float Canvas::zbuff_val_at(int x, int y) const {
+const double Canvas::zbuff_val_at(int x, int y) const {
     return z_buffer_[y * screen_width_ + x];
 }
 
-float Canvas::set_zbuff_val(float z_buff_val, int x, int y) {
+float Canvas::set_zbuff_val(double z_buff_val, int x, int y) {
     z_buffer_[y * screen_width_ + x] = z_buff_val;
     return z_buff_val;
 }

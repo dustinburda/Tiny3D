@@ -7,17 +7,20 @@
 #include "util.h"
 #include "Instance.h"
 
+const Vec<3, double> camera {{ 0.0, 0.0, 3.0 }};
+
 int main() {
     Canvas canvas {height, width};
 
     const auto time_start = std::chrono::steady_clock::now();
 
-    std::string object = "bunny2";
+    std::string object = "cube";
     Mesh m{ object + ".obj"};
 
 
+
     Instance head{&m, nullptr};
-    head.set_transformation(Transformations::Translate(0.2, -0.75, 0)*Transformations::RotateY(pi/7)*Transformations::Scale(8.0, 8.0, 8.0));
+    head.set_transformation(Transformations::Translate(-0.5, -0.5, -3.5));
     // head.raster(canvas, Color{1.0, 1.0, 1.0}, Light{{0, 0, -1}});
      head.raster_wireframe(canvas, Color{1.0, 0.0, 0.0});
 

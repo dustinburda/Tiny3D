@@ -11,6 +11,7 @@
 #include "Texture.h"
 #include "util.h"
 
+extern const Vec<3, double> camera;
 
 static Matrix<3,3, double> viewport(double height, double width) {
     Matrix<3,3, double> vw(0);
@@ -19,6 +20,25 @@ static Matrix<3,3, double> viewport(double height, double width) {
     vw[1][1] = -height / 2.0;
     vw[1][2] = height / 2.0;
     vw[2][2] = 1.0;
+
+    return vw;
+}
+
+static Matrix<2,3, double> orthographic() {
+    Matrix<2,3, double> orth(0);
+
+    orth[0][0] = 1.0;
+    orth[1][1] = 1.0;
+
+    return orth;
+}
+
+static Matrix<4,4, double> projection() {
+    auto proj = Id<4, double>();
+
+    proj[3][2] = -1.0/camera[2];
+
+    return proj;
 }
 
 class Instance {
@@ -59,6 +79,10 @@ public:
     }
 
     void raster_wireframe(Canvas& canvas, const Color& color) {
+        Matrix<3,3, double> viewport_matrix = viewport(height, width);
+        Matrix<2,3, double> orthographic_matrix = orthographic();
+        Matrix<4,4, double> projection_matrix = projection();
+
         for(auto& face : mesh_->faces()) {
             for(size_t i = 0; i < 3; i++) {
                 auto index1 = face[i];
@@ -70,18 +94,23 @@ public:
                 Vec1 = (transformation_ * Vec1.homogenize_vector()).dehomogenize_vector();
                 Vec2 = (transformation_ * Vec2.homogenize_vector()).dehomogenize_vector();
 
-//                Matrix<3,3, double> viewport_matrix = viewport(height, width);
-//                Vec1 = viewport_matrix * Vec1;
-//                Vec2 = viewport_matrix * Vec2;
+                Vec1 = (projection_matrix * Vec1.homogenize_vector()).dehomogenize_vector();
+                Vec2 = (projection_matrix * Vec2.homogenize_vector()).dehomogenize_vector();
 
-                ScreenPoint p1 {{ std::clamp( static_cast<int>(((Vec1[0] + 1.0)/2.0) * 1000), 1, canvas.screen_width() - 1),
-                                  1000 - std::clamp( static_cast<int>(((Vec1[1] + 1.0)/2.0) * 1000), 1, canvas.screen_height() - 1)}};
+//                ScreenPoint p1 {{ std::clamp( static_cast<int>(((Vec1[0] + 1.0)/2.0) * 1000), 1, canvas.screen_width() - 1),
+//                                  1000 - std::clamp( static_cast<int>(((Vec1[1] + 1.0)/2.0) * 1000), 1, canvas.screen_height() - 1)}};
+//
+//                ScreenPoint p2 {{ std::clamp( static_cast<int>(((Vec2[0] + 1.0)/2.0) * 1000), 1, canvas.screen_width() - 1),
+//                                  1000 - std::clamp( static_cast<int>(((Vec2[1] + 1.0)/2.0) * 1000), 1, canvas.screen_height() - 1)}};
 
-                ScreenPoint p2 {{ std::clamp( static_cast<int>(((Vec2[0] + 1.0)/2.0) * 1000), 1, canvas.screen_width() - 1),
-                                  1000 - std::clamp( static_cast<int>(((Vec2[1] + 1.0)/2.0) * 1000), 1, canvas.screen_height() - 1)}};
+                auto OrthVec1 = orthographic_matrix * Vec1;
+                auto OrthVec2 = orthographic_matrix * Vec2;
 
-//                ScreenPoint p1 {{  static_cast<int>(Vec1[0]), static_cast<int>(Vec1[1] )}};
-//                ScreenPoint p2 {{   static_cast<int>(Vec2[0]), static_cast<int>(Vec2[1])}};
+                auto ViewVec1 = (viewport_matrix * OrthVec1.homogenize_vector()).dehomogenize_vector();
+                auto ViewVec2 = (viewport_matrix * OrthVec2.homogenize_vector()).dehomogenize_vector();
+
+                ScreenPoint p1 {{  static_cast<int>(ViewVec1[0]), static_cast<int>(ViewVec1[1] )}};
+                ScreenPoint p2 {{   static_cast<int>(ViewVec2[0]), static_cast<int>(ViewVec2[1])}};
 
                 Line l1 {p1, p2};
 
